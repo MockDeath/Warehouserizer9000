@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace W9000.Entities
+{
+	public class FillOrder
+	{
+		public Guid OrderId { get; set; }
+		public DateTime OrderCreated { get; set; }
+		public DateTime? OrderProcessed { get; set; }
+		public bool OrderClosed { get; set; }
+	}
+}
