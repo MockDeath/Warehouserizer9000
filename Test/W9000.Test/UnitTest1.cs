@@ -19,11 +19,10 @@ namespace W9000.Test
 		}
 
 		[Fact]
-
 		public void ProcessFillOrder_On_Closed_Order()
 		{
 			Mock<IFillOrderRepo> fillOrderRepo = new Mock<IFillOrderRepo>();
-			FillOrder order = new FillOrder();
+			FillOrder order = fillOrderRepo.Object.CreateFillOrder();
 			order.OrderCreated = DateTime.Now;
 			order.OrderId = Guid.NewGuid();
 			FillOrderService fillOrderService = new FillOrderService(fillOrderRepo.Object);
