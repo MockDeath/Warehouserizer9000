@@ -22,13 +22,13 @@ namespace W9000.Business
 
 		public FillOrder ProcessFillOrder(FillOrder fillOrder)
 		{
-			FillOrder currentOrder = _fillOrderRepo.GeGetOrderById(fillOrder.OrderId);
+			FillOrder currentOrder = _fillOrderRepo.GeGetOrderById(fillOrder.Id);
 			if (currentOrder.OrderClosed)
 			{
 				//not graceful but was running low on time.
 				throw new Exception("Order Already closed");
 			}
-			return _fillOrderRepo.ProcessFillOrder(fillOrder.OrderId);
+			return _fillOrderRepo.ProcessFillOrder(fillOrder.Id);
 		}
 
 		public List<FillOrder> ViewOpenOrders()

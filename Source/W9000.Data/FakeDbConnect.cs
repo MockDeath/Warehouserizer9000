@@ -12,14 +12,14 @@ namespace W9000.Data
 
 		private static readonly FillOrder _order1 = new FillOrder
 		{
-			OrderId = Guid.NewGuid(),
+			Id = Guid.NewGuid(),
 			OrderCreated = DateTime.Now,
 			OrderClosed = false,
 		};
 
 		private static readonly FillOrder _order2 = new FillOrder
 		{
-			OrderId = Guid.NewGuid(),
+			Id = Guid.NewGuid(),
 			OrderCreated = DateTime.Now,
 			OrderClosed = true,
 			OrderProcessed = DateTime.Now

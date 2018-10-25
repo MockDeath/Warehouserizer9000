@@ -12,8 +12,8 @@ namespace W9000.Test
 		[Fact]
 		public void ProcessFillOrder_On_Open_Order()
 		{
-			Mock<IFillOrderRepo> fillOrderRepo = new Mock<IFillOrderRepo>();
-			FillOrderService fillOrderService = new FillOrderService(fillOrderRepo.Object);
+			var fillOrderRepo = new Mock<IFillOrderRepo>();
+			var fillOrderService = new FillOrderService(fillOrderRepo.Object);
 			var newOrder = fillOrderService.CreateFillOrder();
 			Assert.IsType<DateTime>(newOrder.OrderCreated);
 		}
@@ -21,10 +21,10 @@ namespace W9000.Test
 		[Fact]
 		public void ProcessFillOrder_On_Closed_Order()
 		{
-			Mock<IFillOrderRepo> fillOrderRepo = new Mock<IFillOrderRepo>();
-			FillOrder order = fillOrderRepo.Object.CreateFillOrder();
+			var fillOrderRepo = new Mock<IFillOrderRepo>();
+			var order = fillOrderRepo.Object.CreateFillOrder();
 			order.OrderCreated = DateTime.Now;
-			order.OrderId = Guid.NewGuid();
+			order.Id = Guid.NewGuid();
 			FillOrderService fillOrderService = new FillOrderService(fillOrderRepo.Object);
 			var closedOrder = fillOrderService.ProcessFillOrder(order);
 			Assert.True(closedOrder.OrderClosed);
@@ -33,8 +33,8 @@ namespace W9000.Test
 		[Fact]
 		public void ViewOpenOrders_Shows_All_Open_Orders()
 		{
-			Mock<IFillOrderRepo> fillOrderRepo = new Mock<IFillOrderRepo>();
-			FillOrderService fillOrderService = new FillOrderService(fillOrderRepo.Object);
+			var fillOrderRepo = new Mock<IFillOrderRepo>();
+			var fillOrderService = new FillOrderService(fillOrderRepo.Object);
 			var newOrder = fillOrderService.CreateFillOrder();
 		}
 	}

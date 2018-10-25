@@ -9,13 +9,14 @@ namespace W9000.Data
 {
 	public class FillOrderRepo : IFillOrderRepo
 	{
-		//I know this is not how you deal with a database, but I as faking it due to lack of time.
+		//I know this is not how you deal with a database, but I am faking it due to lack of time.
+		private readonly IDbConnection _db;
 
 		public FillOrder CreateFillOrder()
 		{
 			FillOrder newOrder = new FillOrder
 			{
-				OrderId = Guid.NewGuid(),
+				Id = Guid.NewGuid(),
 				OrderCreated = DateTime.Now,
 				OrderClosed = false,
 			};
@@ -25,7 +26,7 @@ namespace W9000.Data
 
 		public FillOrder ProcessFillOrder(Guid id)
 		{
-			FillOrder order = FakeDbConnect.Db.Find(o => o.OrderId == id);
+			FillOrder order = FakeDbConnect.Db.Find(o => o.Id == id);
 			order.OrderClosed = true;
 			order.OrderProcessed = DateTime.Now;
 
@@ -39,7 +40,7 @@ namespace W9000.Data
 
 		public FillOrder GeGetOrderById(Guid orderId)
 		{
-			FillOrder order = FakeDbConnect.Db.Find(o => o.OrderId == orderId);
+			FillOrder order = FakeDbConnect.Db.Find(o => o.Id == orderId);
 			return order;
 		}
 	}
