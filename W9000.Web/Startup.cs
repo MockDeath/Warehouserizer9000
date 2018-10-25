@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using W9000.Data;
+using Microsoft.EntityFrameworkCore;
+using W9000.Web.Models;
 
 namespace W9000.Web
 {
@@ -29,6 +31,9 @@ namespace W9000.Web
 
 			
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+		    services.AddDbContext<W9000WebContext>(options =>
+		            options.UseSqlServer(Configuration.GetConnectionString("W9000WebContext")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

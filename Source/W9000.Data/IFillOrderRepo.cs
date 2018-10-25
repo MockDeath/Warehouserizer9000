@@ -9,7 +9,7 @@ namespace W9000.Data
 	{
 		FillOrder CreateFillOrder();
 		FillOrder ProcessFillOrder(Guid id);
-		List<FillOrder> ReturnOpenOrders();
-		FillOrder GeGetOrderById(Guid orderId);
+		List<FillOrder> ReturnAllOrders();
+		FillOrder GetOrderById(Guid orderId);
 	}
 }

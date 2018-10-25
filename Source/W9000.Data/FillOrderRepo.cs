@@ -33,12 +33,12 @@ namespace W9000.Data
 			return order;
 		}
 
-		public List<FillOrder> ReturnOpenOrders()
+		public List<FillOrder> ReturnAllOrders()
 		{
 			return FakeDbConnect.Db;
 		}
 
-		public FillOrder GeGetOrderById(Guid orderId)
+		public FillOrder GetOrderById(Guid orderId)
 		{
 			FillOrder order = FakeDbConnect.Db.Find(o => o.Id == orderId);
 			return order;

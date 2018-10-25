@@ -22,7 +22,7 @@ namespace W9000.Business
 
 		public FillOrder ProcessFillOrder(FillOrder fillOrder)
 		{
-			FillOrder currentOrder = _fillOrderRepo.GeGetOrderById(fillOrder.Id);
+			FillOrder currentOrder = _fillOrderRepo.GetOrderById(fillOrder.Id);
 			if (currentOrder.OrderClosed)
 			{
 				//not graceful but was running low on time.
@@ -31,9 +31,9 @@ namespace W9000.Business
 			return _fillOrderRepo.ProcessFillOrder(fillOrder.Id);
 		}
 
-		public List<FillOrder> ViewOpenOrders()
+		public List<FillOrder> ViewAllOrders()
 		{
-			return _fillOrderRepo.ReturnOpenOrders();
+			return _fillOrderRepo.ReturnAllOrders();
 		}
 	}
 }

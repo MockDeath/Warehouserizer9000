@@ -1,0 +1,36 @@
+﻿@model W9000.Entities.FillOrder
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FillOrder</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderCreated)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderCreated)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderProcessed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderProcessed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderClosed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderClosed)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
