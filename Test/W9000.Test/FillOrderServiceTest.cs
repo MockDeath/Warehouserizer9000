@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Moq;
 using W9000.Business;
 using W9000.Data;
@@ -7,13 +8,13 @@ using Xunit;
 
 namespace W9000.Test
 {
-	public class FillOrderServiceTest : BaseTestClass
+	public class FillOrderServiceTest
 	{
 		[Fact]
 		public void ProcessFillOrder_On_Open_Order()
 		{
 			var fillOrderRepo = new Mock<IFillOrderRepo>();
-			
+			fillOrderRepo.Setup(f => f.CreateFillOrder()).Returns(new FillOrder());
 			var fillOrderService = new FillOrderService(fillOrderRepo.Object);
 			var newOrder = fillOrderService.CreateFillOrder();
 			Assert.IsType<DateTime>(newOrder.OrderCreated);
@@ -22,20 +23,22 @@ namespace W9000.Test
 		[Fact]
 		public void ProcessFillOrder_On_Closed_Order()
 		{
-			var fillOrderRepo = new Mock<IFillOrderRepo>();
-			var order = fillOrderRepo.Object.CreateFillOrder();
-			order.OrderCreated = DateTime.Now;
-			order.Id = Guid.NewGuid().ToString();
-			FillOrderService fillOrderService = new FillOrderService(fillOrderRepo.Object);
-			//var closedOrder = fillOrderService.ProcessFillOrder(order);
-			//Assert.True(closedOrder.OrderClosed);
+			//Because the database is already in memory, it just calls this directly. Normally would use an in memory database to mock out the real one.
+			var fillOrderRepo = new FillOrderRepo();
+			fillOrderRepo.CreateFillOrder();
+			FillOrderService fillOrderService = new FillOrderService(fillOrderRepo);
+			var orders = fillOrderService.ViewOpenOrders();
+			var singleOrder = orders.First();
+			var closedOrder = fillOrderService.ProcessFillOrder(singleOrder.Id);
+			Assert.True(closedOrder.OrderClosed);
 		}
 
 		[Fact]
 		public void ViewOpenOrders_Shows_All_Open_Orders()
 		{
-			var fillOrderRepo = new Mock<IFillOrderRepo>();
-			var fillOrderService = new FillOrderService(fillOrderRepo.Object);
+			//Because the database is already in memory, it just calls this directly. Normally would use an in memory database to mock out the real one.
+			var fillOrderRepo = new FillOrderRepo();
+			var fillOrderService = new FillOrderService(fillOrderRepo);
 			fillOrderService.CreateFillOrder();
 			fillOrderService.CreateFillOrder();
 			Assert.True(fillOrderService.ViewOpenOrders().Count == 2);
