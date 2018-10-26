@@ -20,25 +20,30 @@ namespace W9000.Business
 			return _fillOrderRepo.CreateFillOrder();
 		}
 
-		public FillOrder ViewOrderById(Guid id)
+		public FillOrder ViewOrderById(string id)
 		{
 			return _fillOrderRepo.GetOrderById(id);
 		}
 
-		public FillOrder ProcessFillOrder(FillOrder fillOrder)
+		public FillOrder ProcessFillOrder(string id)
 		{
-			FillOrder currentOrder = _fillOrderRepo.GetOrderById(fillOrder.Id);
+			FillOrder currentOrder = _fillOrderRepo.GetOrderById(id);
 			if (currentOrder.OrderClosed)
 			{
 				//not graceful but was running low on time.
 				throw new Exception("Order Already closed");
 			}
-			return _fillOrderRepo.ProcessFillOrder(fillOrder.Id);
+			return _fillOrderRepo.ProcessFillOrder(id);
 		}
 
 		public List<FillOrder> ViewAllOrders()
 		{
 			return _fillOrderRepo.ReturnAllOrders();
+		}
+
+		public List<FillOrder> ViewOpenOrders()
+		{
+			return _fillOrderRepo.ReturnOpenOrders();
 		}
 	}
 }

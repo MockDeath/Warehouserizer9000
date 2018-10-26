@@ -1,0 +1,56 @@
+﻿@model IEnumerable<W9000.Entities.FillOrder>
+
+@{
+    ViewData["Title"] = "Open";
+}
+
+<h2>Open</h2>
+
+<p>
+    <a asp-action="Index">Back to List</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderCreated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderProcessed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderClosed)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderProcessed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderClosed)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @using (Html.BeginForm("ProcessOrder", "FillOrders", FormMethod.Post))
+                {
+                    <input type="hidden" value="@item.Id" name="id" />
+                    <button type="submit">Process</button>
+                }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

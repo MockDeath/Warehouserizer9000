@@ -8,8 +8,9 @@ namespace W9000.Data
 	public interface IFillOrderRepo
 	{
 		FillOrder CreateFillOrder();
-		FillOrder ProcessFillOrder(Guid id);
+		FillOrder ProcessFillOrder(string id);
 		List<FillOrder> ReturnAllOrders();
-		FillOrder GetOrderById(Guid orderId);
+		FillOrder GetOrderById(string orderId);
+		List<FillOrder> ReturnOpenOrders();
 	}
 }

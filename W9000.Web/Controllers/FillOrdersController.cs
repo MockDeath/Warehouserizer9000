@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using W9000.Business;
+using W9000.Entities;
+using W9000.Web.Models;
 
 namespace W9000.Web.Controllers
 {
@@ -20,8 +22,13 @@ namespace W9000.Web.Controllers
 			return View(_service.ViewAllOrders());
 		}
 
+		public IActionResult Open()
+		{
+			return View(_service.ViewOpenOrders());
+		}
+
 		// GET: FillOrders/Details/5
-		public IActionResult Details(Guid id)
+		public IActionResult Details(string id)
 		{
 
 			var fillOrder = _service.ViewOrderById(id);
@@ -36,6 +43,7 @@ namespace W9000.Web.Controllers
 		[HttpPost]
 		public IActionResult ProcessOrder(string id)
 		{
+			_service.ProcessFillOrder(id);
 			return RedirectToAction("Index");
 		}
 

@@ -16,7 +16,7 @@ namespace W9000.Data
 		{
 			FillOrder newOrder = new FillOrder
 			{
-				Id = Guid.NewGuid(),
+				Id = Guid.NewGuid().ToString(),
 				OrderCreated = DateTime.Now,
 				OrderClosed = false,
 			};
@@ -24,7 +24,7 @@ namespace W9000.Data
 			return newOrder;
 		}
 
-		public FillOrder ProcessFillOrder(Guid id)
+		public FillOrder ProcessFillOrder(string id)
 		{
 			FillOrder order = FakeDbConnect.Db.Find(o => o.Id == id);
 			order.OrderClosed = true;
@@ -38,9 +38,15 @@ namespace W9000.Data
 			return FakeDbConnect.Db;
 		}
 
-		public FillOrder GetOrderById(Guid orderId)
+		public FillOrder GetOrderById(string orderId)
 		{
 			FillOrder order = FakeDbConnect.Db.Find(o => o.Id == orderId);
+			return order;
+		}
+
+		public List<FillOrder> ReturnOpenOrders()
+		{
+			List<FillOrder> order = FakeDbConnect.Db.FindAll(o => o.OrderClosed != true);
 			return order;
 		}
 	}

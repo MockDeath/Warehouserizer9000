@@ -6,6 +6,7 @@
 }
 
 <h2><a asp-action="Create">Create New Fill Order</a></h2>
+<a asp-action="Open">See open orders!</a>
 
 <p>
     @*<a asp-action="Create">Create New Fill Order</a>*@
@@ -29,30 +30,37 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderCreated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderProcessed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderClosed)
-            </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                @using (Html.BeginForm("ProcessOrder", "FillOrders", FormMethod.Post))
-                {
-                    <input hidden="true" value="@item.Id" name="id"/>
-                    <button type="submit">Process</button>
-                }
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderProcessed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderClosed)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @using (Html.BeginForm("ProcessOrder", "FillOrders", FormMethod.Post))
+                    {
+                        <input type="hidden" value="@item.Id" name="Id" />
+                        if (item.OrderClosed)
+                        {
+                            <button type="submit" disabled>Process</button>
+                        }
+                        else
+                        {
+                            <button type="submit">Process</button>
+                        }
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

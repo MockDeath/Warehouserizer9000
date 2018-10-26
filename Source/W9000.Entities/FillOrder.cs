@@ -6,7 +6,7 @@ namespace W9000.Entities
 {
 	public class FillOrder
 	{
-		public Guid Id { get; set; }
+		public string Id { get; set; }
 		public DateTime OrderCreated { get; set; }
 		public DateTime? OrderProcessed { get; set; }
 		public bool OrderClosed { get; set; }
