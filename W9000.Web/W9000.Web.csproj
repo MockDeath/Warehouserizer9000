@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Source\W9000.Business\W9000.Business.csproj" />
     <ProjectReference Include="..\Source\W9000.Data\W9000.Data.csproj" />
   </ItemGroup>
 

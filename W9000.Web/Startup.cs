@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using W9000.Data;
 using Microsoft.EntityFrameworkCore;
+using W9000.Business;
 using W9000.Web.Models;
 
 namespace W9000.Web
@@ -28,8 +29,8 @@ namespace W9000.Web
 				options.CheckConsentNeeded = context => true;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
-
-			
+			services.AddTransient<IFillOrderRepo, FillOrderRepo>();
+			services.AddTransient<FillOrderService>();
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 		    services.AddDbContext<W9000WebContext>(options =>

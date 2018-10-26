@@ -10,7 +10,7 @@ namespace W9000.Data
 	public class FillOrderRepo : IFillOrderRepo
 	{
 		//I know this is not how you deal with a database, but I am faking it due to lack of time.
-		private readonly IDbConnection _db;
+		//private readonly IDbConnection _db;
 
 		public FillOrder CreateFillOrder()
 		{

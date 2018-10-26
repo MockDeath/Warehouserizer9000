@@ -1,17 +1,21 @@
-﻿@model IEnumerable<W9000.Entities.FillOrder>
+﻿@using System.Net
+@model IEnumerable<W9000.Entities.FillOrder>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2><a asp-action="Create">Create New Fill Order</a></h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    @*<a asp-action="Create">Create New Fill Order</a>*@
 </p>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.OrderCreated)
             </th>
@@ -28,6 +32,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.OrderCreated)
             </td>
             <td>
@@ -37,9 +44,13 @@
                 @Html.DisplayFor(modelItem => item.OrderClosed)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+                @using (Html.BeginForm("ProcessOrder", "FillOrders", FormMethod.Post))
+                {
+                    <input hidden="true" value="@item.Id" name="id"/>
+                    <button type="submit">Process</button>
+                }
             </td>
         </tr>
 }

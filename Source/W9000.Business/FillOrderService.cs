@@ -20,6 +20,11 @@ namespace W9000.Business
 			return _fillOrderRepo.CreateFillOrder();
 		}
 
+		public FillOrder ViewOrderById(Guid id)
+		{
+			return _fillOrderRepo.GetOrderById(id);
+		}
+
 		public FillOrder ProcessFillOrder(FillOrder fillOrder)
 		{
 			FillOrder currentOrder = _fillOrderRepo.GetOrderById(fillOrder.Id);

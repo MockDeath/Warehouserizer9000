@@ -1,155 +1,150 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Mvc.Rendering;
-//using Microsoft.EntityFrameworkCore;
-//using W9000.Data;
-//using W9000.Entities;
-//using W9000.Web.Models;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using W9000.Business;
 
-//namespace W9000.Web.Controllers
-//{
-//    public class FillOrdersController : Controller
-//    {
-//        private readonly IFillOrderRepo _context;
+namespace W9000.Web.Controllers
+{
+	public class FillOrdersController : Controller
+	{
+		private readonly FillOrderService _service;
 
-//        public FillOrdersController(IFillOrderRepo context)
-//        {
-//            _context = context;
-//        }
+		public FillOrdersController(FillOrderService service)
+		{
+			_service = service;
+		}
 
-//        // GET: FillOrders
-//        public IActionResult Index()
-//        {
-//            return View( _context.);
-//        }
+		// GET: FillOrders
+		public IActionResult Index()
+		{
+			return View(_service.ViewAllOrders());
+		}
 
-//        // GET: FillOrders/Details/5
-//        public async Task<IActionResult> Details(Guid? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+		// GET: FillOrders/Details/5
+		public IActionResult Details(Guid id)
+		{
 
-//            var fillOrder = await _context.FillOrder
-//                .FirstOrDefaultAsync(m => m.Id == id);
-//            if (fillOrder == null)
-//            {
-//                return NotFound();
-//            }
+			var fillOrder = _service.ViewOrderById(id);
+			if (fillOrder == null)
+			{
+				return NotFound();
+			}
 
-//            return View(fillOrder);
-//        }
+			return View(fillOrder);
+		}
 
-//        // GET: FillOrders/Create
-//        public IActionResult Create()
-//        {
-//            return View();
-//        }
+		[HttpPost]
+		public IActionResult ProcessOrder(string id)
+		{
+			return RedirectToAction("Index");
+		}
 
-//        // POST: FillOrders/Create
-//        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-//        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Create([Bind("Id,OrderCreated,OrderProcessed,OrderClosed")] FillOrder fillOrder)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                fillOrder.Id = Guid.NewGuid();
-//                _context.Add(fillOrder);
-//                await _context.SaveChangesAsync();
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(fillOrder);
-//        }
+		//GET: FillOrders/Create
+		public IActionResult Create()
+		{
+			return View(_service.CreateFillOrder());
+		}
 
-//        // GET: FillOrders/Edit/5
-//        public async Task<IActionResult> Edit(Guid? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+		//// POST: FillOrders/Create
+		//// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		//// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public async Task<IActionResult> Create([Bind("Id,OrderCreated,OrderProcessed,OrderClosed")] FillOrder fillOrder)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		fillOrder.Id = Guid.NewGuid();
+		//		_service.Add(fillOrder);
+		//		await _service.SaveChangesAsync();
+		//		return RedirectToAction(nameof(Index));
+		//	}
+		//	return View(fillOrder);
+		//}
 
-//            var fillOrder = await _context.FillOrder.FindAsync(id);
-//            if (fillOrder == null)
-//            {
-//                return NotFound();
-//            }
-//            return View(fillOrder);
-//        }
+		//// GET: FillOrders/Edit/5
+		//public async Task<IActionResult> Edit(Guid? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return NotFound();
+		//	}
 
-//        // POST: FillOrders/Edit/5
-//        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-//        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(Guid id, [Bind("Id,OrderCreated,OrderProcessed,OrderClosed")] FillOrder fillOrder)
-//        {
-//            if (id != fillOrder.Id)
-//            {
-//                return NotFound();
-//            }
+		//	var fillOrder = await _service.FillOrder.FindAsync(id);
+		//	if (fillOrder == null)
+		//	{
+		//		return NotFound();
+		//	}
+		//	return View(fillOrder);
+		//}
 
-//            if (ModelState.IsValid)
-//            {
-//                try
-//                {
-//                    _context.Update(fillOrder);
-//                    await _context.SaveChangesAsync();
-//                }
-//                catch (DbUpdateConcurrencyException)
-//                {
-//                    if (!FillOrderExists(fillOrder.Id))
-//                    {
-//                        return NotFound();
-//                    }
-//                    else
-//                    {
-//                        throw;
-//                    }
-//                }
-//                return RedirectToAction(nameof(Index));
-//            }
-//            return View(fillOrder);
-//        }
+		//// POST: FillOrders/Edit/5
+		//// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		//// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public async Task<IActionResult> Edit(Guid id, [Bind("Id,OrderCreated,OrderProcessed,OrderClosed")] FillOrder fillOrder)
+		//{
+		//	if (id != fillOrder.Id)
+		//	{
+		//		return NotFound();
+		//	}
 
-//        // GET: FillOrders/Delete/5
-//        public async Task<IActionResult> Delete(Guid? id)
-//        {
-//            if (id == null)
-//            {
-//                return NotFound();
-//            }
+		//	if (ModelState.IsValid)
+		//	{
+		//		try
+		//		{
+		//			_service.Update(fillOrder);
+		//			await _service.SaveChangesAsync();
+		//		}
+		//		catch (DbUpdateConcurrencyException)
+		//		{
+		//			if (!FillOrderExists(fillOrder.Id))
+		//			{
+		//				return NotFound();
+		//			}
+		//			else
+		//			{
+		//				throw;
+		//			}
+		//		}
+		//		return RedirectToAction(nameof(Index));
+		//	}
+		//	return View(fillOrder);
+		//}
 
-//            var fillOrder = await _context.FillOrder
-//                .FirstOrDefaultAsync(m => m.Id == id);
-//            if (fillOrder == null)
-//            {
-//                return NotFound();
-//            }
+		//// GET: FillOrders/Delete/5
+		//public async Task<IActionResult> Delete(Guid? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return NotFound();
+		//	}
 
-//            return View(fillOrder);
-//        }
+		//	var fillOrder = await _service.FillOrder
+		//		.FirstOrDefaultAsync(m => m.Id == id);
+		//	if (fillOrder == null)
+		//	{
+		//		return NotFound();
+		//	}
 
-//        // POST: FillOrders/Delete/5
-//        [HttpPost, ActionName("Delete")]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> DeleteConfirmed(Guid id)
-//        {
-//            var fillOrder = await _context.FillOrder.FindAsync(id);
-//            _context.FillOrder.Remove(fillOrder);
-//            await _context.SaveChangesAsync();
-//            return RedirectToAction(nameof(Index));
-//        }
+		//	return View(fillOrder);
+		//}
 
-//        private bool FillOrderExists(Guid id)
-//        {
-//            return _context.FillOrder.Any(e => e.Id == id);
-//        }
-//    }
-//}
+		//// POST: FillOrders/Delete/5
+		//[HttpPost, ActionName("Delete")]
+		//[ValidateAntiForgeryToken]
+		//public async Task<IActionResult> DeleteConfirmed(Guid id)
+		//{
+		//	var fillOrder = await _service.FillOrder.FindAsync(id);
+		//	_service.FillOrder.Remove(fillOrder);
+		//	await _service.SaveChangesAsync();
+		//	return RedirectToAction(nameof(Index));
+		//}
+
+		//private bool FillOrderExists(Guid id)
+		//{
+		//	return _service.FillOrder.Any(e => e.Id == id);
+		//}
+	}
+}
