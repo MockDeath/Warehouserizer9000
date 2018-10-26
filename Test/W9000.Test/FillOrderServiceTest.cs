@@ -18,6 +18,7 @@ namespace W9000.Test
 			var fillOrderService = new FillOrderService(fillOrderRepo.Object);
 			var newOrder = fillOrderService.CreateFillOrder();
 			Assert.IsType<DateTime>(newOrder.OrderCreated);
+			Assert.IsType<DateTime>(newOrder.OrderCreated);
 		}
 
 		[Fact]
