@@ -13,11 +13,26 @@ namespace W9000.Test
 		[Fact]
 		public void CreateFillOrder_Create_New_Fill_Order()
 		{
+			//Because I did not mock the database fully, this returns an empty object.
+			//wanted to show I can mock out things however.
 			var fillOrderRepo = new Mock<IFillOrderRepo>();
 			fillOrderRepo.Setup(f => f.CreateFillOrder()).Returns(new FillOrder());
 			var fillOrderService = new FillOrderService(fillOrderRepo.Object);
 			var newOrder = fillOrderService.CreateFillOrder();
 			Assert.IsType<DateTime>(newOrder.OrderCreated);
+			Assert.False(newOrder.OrderClosed);
+		}
+
+		[Fact]
+		public void CreateFillOrder_Create_New_Fill_Order_2()
+		{
+			//Because it is in memory as it is and I do not have a mocked DB, I wanted to also show the tests would catch if it generated a fill order
+			var fillOrderRepo = new FillOrderRepo();
+			var fillOrderService = new FillOrderService(fillOrderRepo);
+			var newOrder = fillOrderService.CreateFillOrder();
+			Assert.IsType<DateTime>(newOrder.OrderCreated);
+			Assert.False(newOrder.OrderClosed);
+			Assert.NotNull(newOrder.Id);
 		}
 
 		[Fact]
@@ -41,13 +56,21 @@ namespace W9000.Test
 			var fillOrderService = new FillOrderService(fillOrderRepo);
 			fillOrderService.CreateFillOrder();
 			fillOrderService.CreateFillOrder();
-			Assert.True(fillOrderService.ViewOpenOrders().Count == 2);
+			fillOrderService.CreateFillOrder();
+			fillOrderService.CreateFillOrder();
+			Assert.True(fillOrderService.ViewOpenOrders().Count == 4);
 		}
 
 		[Fact]
 		public void ProcessFillOrder_On_Already_Closed_Order()
 		{
-			throw new NotImplementedException();
+			var fillOrderRepo = new FillOrderRepo();
+			fillOrderRepo.CreateFillOrder();
+			FillOrderService fillOrderService = new FillOrderService(fillOrderRepo);
+			var orders = fillOrderService.ViewOpenOrders();
+			var singleOrder = orders.First();
+			var closedOrder = fillOrderService.ProcessFillOrder(singleOrder.Id);
+			Assert.Throws<Exception>(() => fillOrderService.ProcessFillOrder(closedOrder.Id));
 		}
 	}
 }
