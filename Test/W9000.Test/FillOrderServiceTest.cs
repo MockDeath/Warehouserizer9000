@@ -11,18 +11,17 @@ namespace W9000.Test
 	public class FillOrderServiceTest
 	{
 		[Fact]
-		public void ProcessFillOrder_On_Open_Order()
+		public void CreateFillOrder_Create_New_Fill_Order()
 		{
 			var fillOrderRepo = new Mock<IFillOrderRepo>();
 			fillOrderRepo.Setup(f => f.CreateFillOrder()).Returns(new FillOrder());
 			var fillOrderService = new FillOrderService(fillOrderRepo.Object);
 			var newOrder = fillOrderService.CreateFillOrder();
 			Assert.IsType<DateTime>(newOrder.OrderCreated);
-			Assert.IsType<DateTime>(newOrder.OrderCreated);
 		}
 
 		[Fact]
-		public void ProcessFillOrder_On_Closed_Order()
+		public void ProcessFillOrder_On_Open_Order()
 		{
 			//Because the database is already in memory, it just calls this directly. Normally would use an in memory database to mock out the real one.
 			var fillOrderRepo = new FillOrderRepo();
@@ -43,6 +42,12 @@ namespace W9000.Test
 			fillOrderService.CreateFillOrder();
 			fillOrderService.CreateFillOrder();
 			Assert.True(fillOrderService.ViewOpenOrders().Count == 2);
+		}
+
+		[Fact]
+		public void ProcessFillOrder_On_Already_Closed_Order()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
